@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cek Kodam</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap">
+    <link rel="icon" href="images/favicon.png" type="image/x-icon">
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <div class="dark-mode-toggle">
+        <input type="checkbox" id="dark-mode-toggle">
+        <label for="dark-mode-toggle" class="toggle-label">
+            <span class="sun-icon">🌞</span>
+            <span class="moon-icon">🌜</span>
+        </label>
+    </div>
+    <div class="container">
+        <div id="form-view">
+            <h1>Cek Kodam</h1>
+            <div id="input-container">
+                <input type="text" id="nama" placeholder="Masukkan nama">
+                <button id="submit">Cek Kodam</button>
+            </div>
+            <div class="loading" id="loading" style="display: none;">
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+            </div>
+        </div>
+        <div id="id-card-view" style="display: none;">
+            <div class="id-card" id="id-card">
+                <img src="images/id-card-icon.png" alt="id card icon" class="id-card-icon">
+                <h2>Result</h2>
+                <p id="nama-pemilik"></p>
+                <p id="kodam"></p>
+                <p id="tanggal"></p>
+                <p id="jam"></p>
+                <p id="ip-address"></p>
+                <button id="back-button">Kembali</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
