@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>COMING SOON</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: 'Poppins', sans-serif;
+            background-color: #2c003e; /* Dark purple background */
+            color: #ffffff; /* White text */
+        }
+
+        .directory-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #3e004f;
+            border-radius: 8px;
+        }
+
+        h1 {
+            font-size: 2em;
+            margin-bottom: 20px;
+            text-align: center;
+            text-transform: uppercase;
+        }
+
+        .directory-list {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .directory-list li {
+            padding: 10px;
+            font-size: 1.2em;
+            border-bottom: 1px solid #ffffff33;
+            display: flex;
+            align-items: center;
+        }
+
+        .directory-list li:last-child {
+            border-bottom: none;
+        }
+
+        .directory-list li a {
+            color: #ffffff;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+
+        .directory-list li::before {
+            content: '📁';
+            margin-right: 10px;
+        }
+
+        .directory-list li.file::before {
+            content: '📄';
+        }
+    </style>
+</head>
+
+<body>
+    <div class="directory-container">
+        <h1>DIREKTORI LAINNYA</h1>
+        <ul class="directory-list">
+            <li class="file"><a href="WinSCP-6.3.4-Setup.exe" download>WinSCP</a></li>
+            <li class="file"><a href="putty-64bit-0.81-installer.msi" download>PuTTy</a></li>
+        </ul>
+    </div>
+</body>
+
+</html>

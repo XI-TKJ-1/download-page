@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic Tac Toe 3x3</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="game.png" type="image/x-icon"> <!-- Menambahkan favicon -->
+    <style>
+@keyframes blink {
+    0% { opacity: 1; }
+    50% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+.blink {
+    animation: blink 0.5s linear;
+}
+
+body {
+    font-family: 'Nunito', Arial, sans-serif;
+    text-align: center;
+    background: linear-gradient(135deg, #2e2e2e, #4e4e4e);
+    color: #FFFFFF;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    position: relative;
+}
+
+.title {
+    font-size: 28.8px; /* 24px x 1.2 */
+    font-weight: 700;
+    margin-bottom: 12px; /* 10px x 1.2 */
+    color: #FF6F61; /* Warna merah jambu */
+    text-shadow: 0 0 8px #FF6F61; /* Penambahan efek glow */
+}
+
+.status-container {
+    margin-bottom: 12px; /* 10px x 1.2 */
+    text-align: center;
+}
+
+.status {
+    font-size: 19.2px; /* 16px x 1.2 */
+    color: #FFEB3B; /* Warna kuning cerah */
+    text-shadow: 0 0 8px #FFEB3B; /* Penambahan efek glow */
+}
+
+.player-indicators {
+    margin-bottom: 12px; /* 10px x 1.2 */
+}
+
+.player {
+    font-size: 16.8px; /* 14px x 1.2 */
+    margin: 2.4px 0; /* 2px x 1.2 */
+}
+
+.player.x {
+    color: #00E5FF; /* Warna biru cerah */
+    text-shadow: 0 0 8px #00E5FF; /* Penambahan efek glow */
+}
+
+.player.o {
+    color: #FFEB3B; /* Warna kuning cerah */
+    text-shadow: 0 0 8px #FFEB3B; /* Penambahan efek glow */
+}
+
+.scoreboard {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 360px; /* 300px x 1.2 */
+    margin-bottom: 12px; /* 10px x 1.2 */
+}
+
+.score {
+    font-size: 19.2px; /* 16px x 1.2 */
+    font-weight: 700;
+    color: #FFFFFF;
+    text-shadow: 0 0 8px #FFFFFF; /* Penambahan efek glow */
+}
+
+.board {
+    display: grid;
+    grid-template-columns: repeat(3, 60px); /* Ukuran sel 3x3 */
+    grid-template-rows: repeat(3, 60px); /* Ukuran sel 3x3 */
+    gap: 6px;
+    position: relative;
+}
+
+.cell {
+    width: 60px;
+    height: 60px;
+    background-color: #1E1E1E;
+    border: 1px solid #333333;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    color: #FFFFFF;
+    text-shadow: 0 0 4px #FFFFFF;
+}
+
+.cell:hover {
+    background-color: #333333;
+    transform: scale(1.1); /* Efek zoom */
+}
+
+.cell.x {
+    color: #00E5FF; /* Warna biru cerah */
+    text-shadow: 0 0 8px #00E5FF; /* Penambahan efek glow */
+}
+
+.cell.o {
+    color: #FFEB3B; /* Warna kuning cerah */
+    text-shadow: 0 0 8px #FFEB3B; /* Penambahan efek glow */
+}
+
+.reset {
+    margin-top: 12px; /* 10px x 1.2 */
+    padding: 6px 12px; /* 5px x 1.2 */
+    font-size: 16.8px; /* 14px x 1.2 */
+    cursor: pointer;
+    background: url('reset-button-bg.png') no-repeat center center; /* Gambar latar belakang */
+    background-size: cover;
+    border: none;
+    border-radius: 6px; /* 5px x 1.2 */
+    color: #FFFFFF;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    font-family: 'Nunito', Arial, sans-serif;
+    text-shadow: 0 0 3.6px #FF00FF; /* 3px x 1.2 */
+}
+
+.reset:hover {
+    background-color: #FF66FF;
+    transform: scale(1.05); /* Efek zoom */
+}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="title">Tic Tac Toe 3x3</div>
+        <div class="status-container">
+            <div class="status">Giliran Pemain: X</div>
+        </div>
+        <div class="scoreboard">
+            <div class="score" id="scoreX">X: 0</div>
+            <div class="score" id="scoreO">O: 0</div>
+        </div>
+        <div class="board" id="board"></div>
+        <button class="reset" onclick="resetGame()">Reset Game</button>
+    </div>
+
+    <script>
+const board = document.getElementById('board');
+const status = document.querySelector('.status');
+const scoreX = document.getElementById('scoreX');
+const scoreO = document.getElementById('scoreO');
+let currentPlayer = 'X';
+let gameBoard = Array(3).fill(null).map(() => Array(3).fill(null));
+let scores = { X: 0, O: 0 };
+
+function createBoard() {
+    board.innerHTML = '';
+    for (let i = 0; i < 9; i++) {
+        const cell = document.createElement('div');
+        cell.classList.add('cell');
+        cell.dataset.index = i;
+        cell.addEventListener('click', () => handleClick(i));
+        board.appendChild(cell);
+    }
+}
+
+function handleClick(index) {
+    const row = Math.floor(index / 3);
+    const col = index % 3;
+
+    if (gameBoard[row][col] || checkWinner()) return;
+
+    gameBoard[row][col] = currentPlayer;
+    const cell = board.children[index];
+    cell.textContent = currentPlayer;
+    cell.classList.add(currentPlayer.toLowerCase());
+
+    if (checkWinner()) {
+        status.textContent = `Pemain ${currentPlayer} Menang!`;
+        scores[currentPlayer]++;
+        updateScores();
+        flashScore(currentPlayer);
+        setTimeout(resetGame, 1000); // Reset game after 1 second
+    } else {
+        currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+        status.textContent = `Giliran Pemain: ${currentPlayer}`;
+    }
+}
+
+function checkWinner() {
+    const winningPatterns = [
+        // Horizontal
+        [[0, 0], [0, 1], [0, 2]],
+        [[1, 0], [1, 1], [1, 2]],
+        [[2, 0], [2, 1], [2, 2]],
+        // Vertical
+        [[0, 0], [1, 0], [2, 0]],
+        [[0, 1], [1, 1], [2, 1]],
+        [[0, 2], [1, 2], [2, 2]],
+        // Diagonal
+        [[0, 0], [1, 1], [2, 2]],
+        [[0, 2], [1, 1], [2, 0]]
+    ];
+
+    for (const pattern of winningPatterns) {
+        const [a, b, c] = pattern;
+        if (gameBoard[a[0]][a[1]] && gameBoard[a[0]][a[1]] === gameBoard[b[0]][b[1]] && gameBoard[a[0]][a[1]] === gameBoard[c[0]][c[1]]) {
+            return true;
+        }
+    }
+    return false;
+}
+
+function updateScores() {
+    scoreX.textContent = `X: ${scores.X}`;
+    scoreO.textContent = `O: ${scores.O}`;
+}
+
+function flashScore(player) {
+    const scoreElement = player === 'X' ? scoreX : scoreO;
+    scoreElement.classList.add('blink');
+    setTimeout(() => {
+        scoreElement.classList.remove('blink');
+    }, 500); // Efek berkedip selama 0.5 detik
+}
+
+function resetGame() {
+    gameBoard = Array(3).fill(null).map(() => Array(3).fill(null));
+    Array.from(board.children).forEach(cell => {
+        cell.textContent = '';
+        cell.classList.remove('x', 'o');
+    });
+    currentPlayer = 'X';
+    status.textContent = `Giliran Pemain: ${currentPlayer}`;
+}
+
+createBoard();
+    </script>
+</body>
+</html>
